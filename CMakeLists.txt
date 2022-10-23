@@ -13,6 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt5 CONFIG REQUIRED Widgets DBus X11Extras Concurrent LinguistTools QuickControls2)
 
 find_package(KF5WindowSystem REQUIRED)
+add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
 
 set(SRCS
     src/applicationitem.h

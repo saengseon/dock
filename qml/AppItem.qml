@@ -35,6 +35,39 @@ DockItem {
     draggable: !model.fixed
     dragItemIndex: index
 
+    SequentialAnimation on y {
+        id: launchAnimation
+        loops: 10
+        running: false
+
+        // Move from minHeight to maxHeight in 300ms, using the OutExpo easing function
+        NumberAnimation {
+            from: appItem.y; to: appItem.y - 20
+            easing.type: Easing.OutExpo; duration: 300
+        }
+
+        // Then move back to minHeight in 1 second, using the OutBounce easing function
+        NumberAnimation {
+            from: appItem.y - 20; to: 0
+            easing.type: Easing.OutBounce; duration: 1000
+        }
+
+        PauseAnimation {
+            duration: 200
+        }
+    }
+
+    SequentialAnimation on y {
+        id: goBackAnimation
+        loops: 1
+        running: false
+
+        NumberAnimation {
+            from: appItem.y; to: 0
+            easing.type: Easing.OutBounce; duration: 1000
+        }
+    }
+
     onXChanged: {
         if (windowCount > 0)
             updateGeometry()
@@ -46,12 +79,17 @@ DockItem {
     }
 
     onWindowCountChanged: {
-        if (windowCount > 0)
+        if (windowCount > 0) {
+            launchAnimation.running = false
+            goBackAnimation.running = true
             updateGeometry()
+        }
     }
 
     onPositionChanged: updateGeometry()
+
     onPressed: updateGeometry()
+
     onRightClicked: if (model.appId !== "cutefish-launcher") contextMenu.show()
 
     onClicked: {
@@ -59,6 +97,11 @@ DockItem {
             appModel.clicked(model.appId)
         else if (mouse.button === Qt.MiddleButton)
             appModel.openNewInstance(model.appId)
+        
+        if (!appModel.isActive && model.appId !== "cutefish-launcher") {
+            launchAnimation.running = true
+            updateGeometry()
+        }
     }
 
     dropArea.onEntered: {

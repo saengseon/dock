@@ -43,6 +43,7 @@ DockSettings::DockSettings(QObject *parent)
     , m_roundedWindowEnabled(true)
     , m_direction(Left)
     , m_visibility(AlwaysShow)
+    , m_launchAnimationEnabled(true)
     , m_settings(new QSettings(QSettings::UserScope, "cutefishos", "dock"))
 {
     if (!m_settings->contains("IconSize"))
@@ -53,6 +54,8 @@ DockSettings::DockSettings(QObject *parent)
         m_settings->setValue("Visibility", AlwaysShow);
     if (!m_settings->contains("RoundedWindow"))
         m_settings->setValue("RoundedWindow", true);
+    if (!m_settings->contains("LaunchAnimation"))
+        m_settings->setValue("LaunchAnimation", true);
     if (!m_settings->contains("Style"))
         m_settings->setValue("Style", Round);
     if (!m_settings->contains("EdgeMargins"))
@@ -64,6 +67,7 @@ DockSettings::DockSettings(QObject *parent)
     m_direction = static_cast<Direction>(m_settings->value("Direction").toInt());
     m_visibility = static_cast<Visibility>(m_settings->value("Visibility").toInt());
     m_roundedWindowEnabled = m_settings->value("RoundedWindow").toBool();
+    m_launchAnimationEnabled = m_settings->value("LaunchAnimation").toBool();
     m_style = static_cast<Style>(m_settings->value("Style").toInt());
     m_edgeMargins = m_settings->value("EdgeMargins").toInt();
 }
@@ -120,9 +124,17 @@ void DockSettings::setEdgeMargins(int edgeMargins)
     m_edgeMargins = edgeMargins;
 }
 
-bool DockSettings::roundedWindowEnabled() const
-{
-    return m_roundedWindowEnabled;
+bool DockSettings::launchAnimationEnabled() const {
+    return m_launchAnimationEnabled;
+}
+
+void DockSettings::setLaunchAnimationEnabled(bool enabled) {
+    m_launchAnimationEnabled = !m_launchAnimationEnabled;
+    m_settings->setValue("LaunchAnimation", m_launchAnimationEnabled);
+}
+
+bool DockSettings::roundedWindowEnabled() const {
+  return m_roundedWindowEnabled;
 }
 
 void DockSettings::setRoundedWindowEnabled(bool enabled)

@@ -30,6 +30,7 @@ class DockSettings : public QObject
     Q_PROPERTY(int iconSize READ iconSize WRITE setIconSize NOTIFY iconSizeChanged)
     Q_PROPERTY(int edgeMargins READ edgeMargins WRITE setEdgeMargins)
     Q_PROPERTY(bool roundedWindowEnabled READ roundedWindowEnabled WRITE setRoundedWindowEnabled NOTIFY roundedWindowEnabledChanged)
+    Q_PROPERTY(bool launchAnimationEnabled READ launchAnimationEnabled WRITE setLaunchAnimationEnabled)
     Q_PROPERTY(Style style READ style WRITE setStyle NOTIFY styleChanged)
 
 public:
@@ -72,6 +73,9 @@ public:
     bool roundedWindowEnabled() const;
     void setRoundedWindowEnabled(bool enabled);
 
+    bool launchAnimationEnabled() const;
+    void setLaunchAnimationEnabled(bool enabled);
+
     Style style() const;
     void setStyle(const Style &style);
 
@@ -86,6 +90,7 @@ private:
     int m_iconSize;
     int m_edgeMargins;
     bool m_roundedWindowEnabled;
+    bool m_launchAnimationEnabled;
     Direction m_direction;
     Visibility m_visibility;
     Style m_style;
